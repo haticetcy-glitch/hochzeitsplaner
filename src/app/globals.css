@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --brand: #B45A30;
+    --brand-light: #FAE8E1;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    @apply font-sans text-gray-900 bg-gray-50;
+  }
+
+  h1, h2, h3 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-brand-500 hover:bg-brand-600 text-white font-sans font-medium px-5 py-2.5 rounded-lg transition-colors text-sm;
+  }
+
+  .btn-outline {
+    @apply border border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700 font-sans font-medium px-5 py-2.5 rounded-lg transition-colors text-sm bg-white;
+  }
+
+  .card {
+    @apply bg-white border border-gray-100 rounded-2xl overflow-hidden hover:border-gray-200 transition-colors;
+  }
+
+  .tag {
+    @apply text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full;
+  }
+
+  .tag-accent {
+    @apply text-xs bg-brand-50 text-brand-500 px-2.5 py-1 rounded-full;
+  }
+
+  .input {
+    @apply w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm font-sans focus:outline-none focus:border-brand-500 transition-colors bg-white;
+  }
+
+  .section-title {
+    @apply font-serif text-2xl font-normal text-gray-900;
+  }
+}
