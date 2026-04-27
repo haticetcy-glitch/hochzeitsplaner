@@ -7,19 +7,21 @@ import Footer from '@/components/layout/Footer'
 import InquiryForm from '@/components/ui/InquiryForm'
 import { MapPin, Globe, Instagram, Phone, CheckCircle, Star } from 'lucide-react'
 
-type Props = { params: { category: string; slug: string } }
+type Props = { params: Promise<{ category: string; slug: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const vendor = await getVendorBySlug(params.slug).catch(() => null)
+  const { slug } = await params
+  const vendor = await getVendorBySlug(slug).catch(() => null)
   if (!vendor) return {}
   return {
     title: `${vendor.name} · ${vendor.city}`,
-    description: vendor.tagline || vendor.description?.slice(0, 160),
+    description: vendor.tagline || undefined,
   }
 }
 
 export default async function VendorPage({ params }: Props) {
-  const vendor = await getVendorBySlug(params.slug).catch(() => null)
+  const { slug } = await params
+  const vendor = await getVendorBySlug(slug).catch(() => null)
   if (!vendor) notFound()
 
   const reviews = await getVendorReviews(vendor.id).catch(() => [])
@@ -27,8 +29,6 @@ export default async function VendorPage({ params }: Props) {
   return (
     <>
       <Navbar />
-
-      {/* Breadcrumb */}
       <div className="max-w-6xl mx-auto px-4 py-3 text-sm text-gray-400 flex gap-2">
         <a href="/" className="hover:text-gray-600">Start</a>
         <span>/</span>
@@ -41,11 +41,7 @@ export default async function VendorPage({ params }: Props) {
 
       <div className="max-w-6xl mx-auto px-4 pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-          {/* Left: Main content */}
           <div className="lg:col-span-2 space-y-6">
-
-            {/* Cover */}
             <div className="h-64 md:h-80 bg-brand-50 rounded-2xl overflow-hidden relative">
               {vendor.cover_image_url ? (
                 <Image src={vendor.cover_image_url} alt={vendor.name} fill className="object-cover" />
@@ -61,7 +57,6 @@ export default async function VendorPage({ params }: Props) {
               )}
             </div>
 
-            {/* Header */}
             <div>
               <div className="flex items-start justify-between gap-4 flex-wrap">
                 <div>
@@ -91,25 +86,17 @@ export default async function VendorPage({ params }: Props) {
                   <MapPin size={14} />
                   <span>{vendor.city}{vendor.state && `, ${vendor.state}`}</span>
                 </div>
-                {vendor.avg_rating && (
-                  <div className="flex items-center gap-1.5 text-sm">
-                    <Star size={14} className="text-brand-500 fill-brand-500" />
-                    <span className="font-medium">{vendor.avg_rating.toFixed(1)}</span>
-                    <span className="text-gray-400">({vendor.review_count} Bewertungen)</span>
-                  </div>
-                )}
               </div>
 
               {vendor.tags.length > 0 && (
                 <div className="flex gap-2 mt-4 flex-wrap">
-                  {vendor.tags.map(tag => (
+                  {vendor.tags.map((tag: string) => (
                     <span key={tag} className="tag-accent">{tag}</span>
                   ))}
                 </div>
               )}
             </div>
 
-            {/* About */}
             {vendor.description && (
               <div className="bg-white border border-gray-100 rounded-2xl p-6">
                 <h2 className="font-serif text-xl font-normal mb-3">Über uns</h2>
@@ -117,7 +104,6 @@ export default async function VendorPage({ params }: Props) {
               </div>
             )}
 
-            {/* Links */}
             <div className="bg-white border border-gray-100 rounded-2xl p-6">
               <h2 className="font-serif text-xl font-normal mb-4">Kontakt & Links</h2>
               <div className="space-y-3">
@@ -146,7 +132,6 @@ export default async function VendorPage({ params }: Props) {
               </div>
             </div>
 
-            {/* Reviews */}
             {reviews.length > 0 && (
               <div className="bg-white border border-gray-100 rounded-2xl p-6">
                 <h2 className="font-serif text-xl font-normal mb-4">Bewertungen</h2>
@@ -156,7 +141,7 @@ export default async function VendorPage({ params }: Props) {
                       <div className="flex items-center justify-between mb-1">
                         <span className="font-medium text-sm">{review.reviewer_name}</span>
                         <div className="flex">
-                          {[...Array(5)].map((_, i) => (
+                          {[...Array(5)].map((_: any, i: number) => (
                             <Star key={i} size={12}
                               className={i < review.rating ? 'text-brand-500 fill-brand-500' : 'text-gray-200'} />
                           ))}
@@ -165,11 +150,6 @@ export default async function VendorPage({ params }: Props) {
                       {review.text && (
                         <p className="text-sm text-gray-600">{review.text}</p>
                       )}
-                      {review.wedding_date && (
-                        <p className="text-xs text-gray-400 mt-1">
-                          Hochzeit: {new Date(review.wedding_date).toLocaleDateString('de-DE', { year: 'numeric', month: 'long' })}
-                        </p>
-                      )}
                     </div>
                   ))}
                 </div>
@@ -177,13 +157,11 @@ export default async function VendorPage({ params }: Props) {
             )}
           </div>
 
-          {/* Right: Inquiry form (sticky) */}
           <div className="lg:sticky lg:top-20 self-start">
             <InquiryForm vendorId={vendor.id} vendorName={vendor.name} />
           </div>
         </div>
       </div>
-
       <Footer />
     </>
   )

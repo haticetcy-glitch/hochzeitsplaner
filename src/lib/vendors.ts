@@ -4,32 +4,25 @@ import { Vendor, SearchParams } from '@/types'
 export async function getVendors(params: SearchParams = {}): Promise<Vendor[]> {
   let query = supabase
     .from('vendors')
-    .select(`
-      *,
-      category:categories(*),
-      rating:vendor_ratings(avg_rating, review_count)
-    `)
+    .select(`*, category:categories(*)`)
     .eq('is_active', true)
     .order('is_featured', { ascending: false })
-    .order('plan', { ascending: false })
 
   if (params.category) {
-    query = query.eq('categories.slug', params.category)
+    const { data: cat } = await supabase
+      .from('categories')
+      .select('id')
+      .eq('slug', params.category)
+      .single()
+    
+    if (cat) {
+      query = query.eq('category_id', cat.id)
+    }
   }
 
   if (params.city) {
     query = query.ilike('city', `%${params.city}%`)
   }
-
-  if (params.query) {
-    query = query.textSearch('search_vector', params.query, {
-      type: 'websearch',
-      config: 'german',
-    })
-  }
-
-  const from = ((params.page || 1) - 1) * 12
-  query = query.range(from, from + 11)
 
   const { data, error } = await query
   if (error) throw error
@@ -39,27 +32,19 @@ export async function getVendors(params: SearchParams = {}): Promise<Vendor[]> {
 export async function getVendorBySlug(slug: string): Promise<Vendor | null> {
   const { data, error } = await supabase
     .from('vendors')
-    .select(`
-      *,
-      category:categories(*),
-      rating:vendor_ratings(avg_rating, review_count)
-    `)
+    .select(`*, category:categories(*)`)
     .eq('slug', slug)
     .eq('is_active', true)
     .single()
 
   if (error) return null
-
-  // Increment view count (fire and forget)
-  supabase.rpc('increment_vendor_views', { vendor_id: data.id }).then(() => {})
-
   return data as Vendor
 }
 
 export async function getFeaturedVendors(limit = 6): Promise<Vendor[]> {
   const { data, error } = await supabase
     .from('vendors')
-    .select(`*, category:categories(*), rating:vendor_ratings(avg_rating, review_count)`)
+    .select(`*, category:categories(*)`)
     .eq('is_active', true)
     .eq('is_featured', true)
     .limit(limit)

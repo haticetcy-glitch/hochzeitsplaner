@@ -227,11 +227,11 @@ __turbopack_context__.s([
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = /*#__PURE__*/ __turbopack_context__.i("[project]/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$supabase$2f$supabase$2d$js$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/@supabase/supabase-js/dist/index.mjs [app-client] (ecmascript) <locals>");
 ;
-const supabaseUrl = ("TURBOPACK compile-time value", "https://DEIN-PROJEKT.supabase.co");
-const supabaseAnonKey = ("TURBOPACK compile-time value", "eyJ...");
+const supabaseUrl = ("TURBOPACK compile-time value", "https://ynonpfioxmqpgpjmknus.supabase.co/");
+const supabaseAnonKey = ("TURBOPACK compile-time value", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlub25wZmlveG1xcGdwam1rbnVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyNDExNTAsImV4cCI6MjA5MjgxNzE1MH0.w8uuF4k9msW7Y7Is2nnPTKZek8J7Zcesvue-xU5Pau4");
 const supabase = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$supabase$2f$supabase$2d$js$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["createClient"])(supabaseUrl, supabaseAnonKey);
 function createServerClient() {
-    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$supabase$2f$supabase$2d$js$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["createClient"])(("TURBOPACK compile-time value", "https://DEIN-PROJEKT.supabase.co"), __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].env.SUPABASE_SERVICE_ROLE_KEY);
+    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$supabase$2f$supabase$2d$js$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["createClient"])(("TURBOPACK compile-time value", "https://ynonpfioxmqpgpjmknus.supabase.co/"), __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].env.SUPABASE_SERVICE_ROLE_KEY);
 }
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
@@ -259,48 +259,29 @@ __turbopack_context__.s([
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/supabase.ts [app-client] (ecmascript)");
 ;
 async function getVendors(params = {}) {
-    let query = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["supabase"].from('vendors').select(`
-      *,
-      category:categories(*),
-      rating:vendor_ratings(avg_rating, review_count)
-    `).eq('is_active', true).order('is_featured', {
-        ascending: false
-    }).order('plan', {
+    let query = __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["supabase"].from('vendors').select(`*, category:categories(*)`).eq('is_active', true).order('is_featured', {
         ascending: false
     });
     if (params.category) {
-        query = query.eq('categories.slug', params.category);
+        const { data: cat } = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["supabase"].from('categories').select('id').eq('slug', params.category).single();
+        if (cat) {
+            query = query.eq('category_id', cat.id);
+        }
     }
     if (params.city) {
         query = query.ilike('city', `%${params.city}%`);
     }
-    if (params.query) {
-        query = query.textSearch('search_vector', params.query, {
-            type: 'websearch',
-            config: 'german'
-        });
-    }
-    const from = ((params.page || 1) - 1) * 12;
-    query = query.range(from, from + 11);
     const { data, error } = await query;
     if (error) throw error;
     return data || [];
 }
 async function getVendorBySlug(slug) {
-    const { data, error } = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["supabase"].from('vendors').select(`
-      *,
-      category:categories(*),
-      rating:vendor_ratings(avg_rating, review_count)
-    `).eq('slug', slug).eq('is_active', true).single();
+    const { data, error } = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["supabase"].from('vendors').select(`*, category:categories(*)`).eq('slug', slug).eq('is_active', true).single();
     if (error) return null;
-    // Increment view count (fire and forget)
-    __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["supabase"].rpc('increment_vendor_views', {
-        vendor_id: data.id
-    }).then(()=>{});
     return data;
 }
 async function getFeaturedVendors(limit = 6) {
-    const { data, error } = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["supabase"].from('vendors').select(`*, category:categories(*), rating:vendor_ratings(avg_rating, review_count)`).eq('is_active', true).eq('is_featured', true).limit(limit);
+    const { data, error } = await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$supabase$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["supabase"].from('vendors').select(`*, category:categories(*)`).eq('is_active', true).eq('is_featured', true).limit(limit);
     if (error) throw error;
     return data || [];
 }
