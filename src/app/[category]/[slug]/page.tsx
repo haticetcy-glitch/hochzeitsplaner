@@ -42,7 +42,7 @@ export default async function VendorPage({ params }: Props) {
       <div className="max-w-6xl mx-auto px-4 pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
-            <div className="h-64 md:h-80 bg-brand-50 rounded-2xl overflow-hidden relative">
+            <div className="h-64 md:h-80 bg-blush rounded-2xl overflow-hidden relative">
               {vendor.cover_image_url ? (
                 <Image src={vendor.cover_image_url} alt={vendor.name} fill className="object-cover" />
               ) : (
@@ -51,7 +51,7 @@ export default async function VendorPage({ params }: Props) {
                 </div>
               )}
               {vendor.is_featured && (
-                <div className="absolute top-4 left-4 bg-brand-500 text-white text-xs font-medium px-3 py-1.5 rounded-full">
+                <div className="absolute top-4 left-4 bg-terrakotta text-white text-xs font-medium px-3 py-1.5 rounded-full">
                   Empfohlen
                 </div>
               )}
@@ -60,10 +60,10 @@ export default async function VendorPage({ params }: Props) {
             <div>
               <div className="flex items-start justify-between gap-4 flex-wrap">
                 <div>
-                  <h1 className="font-serif text-3xl font-normal text-gray-900 flex items-center gap-2">
+                  <h1 className="font-serif text-3xl font-normal text-anthrazit flex items-center gap-2">
                     {vendor.name}
                     {vendor.is_verified && (
-                      <CheckCircle size={20} className="text-brand-500 shrink-0" />
+                      <CheckCircle size={20} className="text-terrakotta shrink-0" />
                     )}
                   </h1>
                   {vendor.tagline && (
@@ -109,7 +109,7 @@ export default async function VendorPage({ params }: Props) {
               <div className="space-y-3">
                 {vendor.website && (
                   <a href={vendor.website} target="_blank" rel="noopener noreferrer"
-                    className="flex items-center gap-3 text-sm text-gray-600 hover:text-brand-500 transition-colors">
+                    className="flex items-center gap-3 text-sm text-gray-600 hover:text-terrakotta transition-colors">
                     <Globe size={15} />
                     {vendor.website.replace(/^https?:\/\//, '')}
                   </a>
@@ -117,14 +117,14 @@ export default async function VendorPage({ params }: Props) {
                 {vendor.instagram && (
                   <a href={`https://instagram.com/${vendor.instagram.replace('@', '')}`}
                     target="_blank" rel="noopener noreferrer"
-                    className="flex items-center gap-3 text-sm text-gray-600 hover:text-brand-500 transition-colors">
+                    className="flex items-center gap-3 text-sm text-gray-600 hover:text-terrakotta transition-colors">
                     <Instagram size={15} />
                     @{vendor.instagram.replace('@', '')}
                   </a>
                 )}
                 {vendor.phone && (
                   <a href={`tel:${vendor.phone}`}
-                    className="flex items-center gap-3 text-sm text-gray-600 hover:text-brand-500 transition-colors">
+                    className="flex items-center gap-3 text-sm text-gray-600 hover:text-terrakotta transition-colors">
                     <Phone size={15} />
                     {vendor.phone}
                   </a>
@@ -143,7 +143,7 @@ export default async function VendorPage({ params }: Props) {
                         <div className="flex">
                           {[...Array(5)].map((_: any, i: number) => (
                             <Star key={i} size={12}
-                              className={i < review.rating ? 'text-brand-500 fill-brand-500' : 'text-gray-200'} />
+                              className={i < review.rating ? 'text-gold fill-gold' : 'text-gray-200'} />
                           ))}
                         </div>
                       </div>

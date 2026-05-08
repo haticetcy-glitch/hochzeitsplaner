@@ -1,141 +1,192 @@
-import { Suspense } from 'react'
-import { getFeaturedVendors } from '@/lib/vendors'
-import { CATEGORIES } from '@/lib/vendors'
+'use client'
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { Heart, MapPin } from 'lucide-react'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
-import SearchBar from '@/components/ui/SearchBar'
-import VendorCard from '@/components/cards/VendorCard'
-import Link from 'next/link'
+import HeroSearchBar from '@/components/ui/HeroSearchBar'
+import { getBrowserClient } from '@/lib/supabase'
 
-const POPULAR_CITIES = [
-  'Berlin', 'München', 'Hamburg', 'Köln', 'Frankfurt',
-  'Stuttgart', 'Düsseldorf', 'Mannheim', 'Heidelberg', 'Dresden',
+const PAGE_CATEGORIES = [
+  { name: 'Locations',   slug: 'locations' },
+  { name: 'Fotografen',  slug: 'fotografen' },
+  { name: 'Videografen', slug: 'videografen' },
+  { name: 'Catering',    slug: 'catering' },
+  { name: 'Musik',       slug: 'musik' },
+  { name: 'Makeup',      slug: 'makeup' },
+  { name: 'Floristik',   slug: 'floristik' },
 ]
 
-async function FeaturedVendors() {
-  try {
-    const vendors = await getFeaturedVendors(6)
-    if (!vendors.length) {
-      // Fallback for demo without DB
-      return (
-        <div className="text-center py-8 text-gray-400 text-sm">
-          Noch keine Einträge – sei der Erste!
-        </div>
-      )
-    }
-    return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {vendors.map(v => <VendorCard key={v.id} vendor={v} />)}
+type VendorProfile = {
+  id: string
+  business_name: string
+  category: string
+  city: string
+  profile_image_url: string
+  portfolio_urls: string[]
+}
+
+function VendorCard({ v }: { v: VendorProfile }) {
+  const [saved, setSaved] = useState(false)
+  const photo = v.profile_image_url || v.portfolio_urls?.[0] || null
+
+  return (
+    <Link href={`/anbieter/${v.id}`} className="vendor-card group overflow-hidden block">
+      <div className="h-48 relative bg-blush overflow-hidden">
+        {photo ? (
+          <img
+            src={photo}
+            alt={v.business_name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <span className="text-5xl opacity-15">✦</span>
+          </div>
+        )}
+        {v.category && (
+          <span className="absolute top-3 left-3 text-[10px] font-semibold tracking-wide px-2.5 py-1 rounded-full bg-white/90 text-anthrazit">
+            {v.category}
+          </span>
+        )}
+        <button
+          className="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors"
+          onClick={e => { e.preventDefault(); setSaved(s => !s) }}
+          aria-label="Merken"
+        >
+          <Heart size={14} className={saved ? 'fill-terrakotta text-terrakotta' : 'text-gray-400'} />
+        </button>
       </div>
-    )
-  } catch {
-    return null
-  }
+      <div className="p-4">
+        <h3 className="font-medium text-anthrazit text-sm leading-snug group-hover:text-terrakotta transition-colors mb-1">
+          {v.business_name}
+        </h3>
+        {v.city && (
+          <div className="flex items-center gap-1 text-xs text-gray-400 mt-2">
+            <MapPin size={11} className="text-terrakotta" />
+            <span>{v.city}</span>
+          </div>
+        )}
+      </div>
+    </Link>
+  )
+}
+
+function VendorSkeleton() {
+  return (
+    <div className="vendor-card overflow-hidden animate-pulse">
+      <div className="h-48 bg-gray-100" />
+      <div className="p-4 space-y-2">
+        <div className="h-4 bg-gray-100 rounded w-3/4" />
+        <div className="h-3 bg-gray-100 rounded w-1/3" />
+      </div>
+    </div>
+  )
 }
 
 export default function HomePage() {
+  const [vendors, setVendors] = useState<VendorProfile[]>([])
+  const [loadingVendors, setLoadingVendors] = useState(true)
+
+  useEffect(() => {
+    const supabase = getBrowserClient()
+    supabase
+      .from('vendor_profiles')
+      .select('id, business_name, category, city, profile_image_url, portfolio_urls')
+      .not('business_name', 'is', null)
+      .neq('business_name', '')
+      .order('created_at', { ascending: false })
+      .limit(4)
+      .then(({ data, error }) => {
+        if (error) console.error('[Homepage] vendor_profiles fetch error:', error)
+        setVendors((data ?? []) as VendorProfile[])
+        setLoadingVendors(false)
+      })
+  }, [])
+
   return (
     <>
       <Navbar />
 
-      {/* Hero */}
-      <section className="bg-white border-b border-gray-100">
-        <div className="max-w-4xl mx-auto px-4 py-16 text-center">
-          <div className="inline-flex items-center gap-2 bg-brand-50 text-brand-500 text-xs font-medium px-3 py-1.5 rounded-full mb-6">
-            💍 Kein Aufpreis für Paare · Direkte Anfragen
-          </div>
-          <h1 className="font-serif text-4xl md:text-5xl font-normal leading-tight text-gray-900 mb-4">
-            Euer Traumtag verdient<br />
-            <em className="text-brand-500">die besten Dienstleister.</em>
-          </h1>
-          <p className="text-gray-500 text-lg mb-8 max-w-xl mx-auto leading-relaxed">
-            Locations, Fotografen & Dienstleister in ganz Deutschland – kostenlos anfragen, keine Provision.
-          </p>
-          <SearchBar className="max-w-xl mx-auto" />
+      {/* ── Hero ──────────────────────────────────────────────────────── */}
+      <section
+        className="relative w-full"
+        style={{
+          minHeight: '85vh',
+          backgroundImage:
+            'url(https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&q=80)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.30)' }} />
 
-          {/* Popular cities */}
-          <div className="mt-6 flex flex-wrap justify-center gap-2">
-            <span className="text-xs text-gray-400 flex items-center">Beliebt:</span>
-            {POPULAR_CITIES.slice(0, 6).map(city => (
-              <Link key={city} href={`/anbieter?stadt=${city}`}
-                className="text-xs text-gray-500 hover:text-brand-500 transition-colors">
-                {city}
+        <div className="relative z-10 flex flex-col justify-end h-full px-8 md:px-16 pb-40" style={{ minHeight: '85vh' }}>
+          <h1 className="font-playfair text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-4 max-w-2xl">
+            Find the perfect match<br />for your perfect day.
+          </h1>
+          <p className="text-white/75 text-lg max-w-xl leading-relaxed font-cormorant">
+            Entdecke die besten Dienstleister für Events, Feiern und besondere Momente.
+          </p>
+        </div>
+
+        <div className="absolute bottom-0 inset-x-0 translate-y-1/2 z-20 flex justify-center px-6">
+          <div className="w-full max-w-4xl">
+            <HeroSearchBar />
+          </div>
+        </div>
+      </section>
+
+      {/* ── Main content ──────────────────────────────────────────────── */}
+      <main className="max-w-7xl mx-auto px-6 pb-20" style={{ paddingTop: '6rem' }}>
+
+        {/* Beliebte Kategorien */}
+        <section className="mb-14">
+          <h2 className="section-title mb-7">Beliebte Kategorien</h2>
+          <div className="flex gap-3">
+            {PAGE_CATEGORIES.map(cat => (
+              <Link
+                key={cat.slug}
+                href={`/${cat.slug}`}
+                className="flex-1 flex flex-col items-center gap-2.5 group"
+              >
+                <div className="category-icon-wrapper w-12 h-12 shrink-0 group-hover:bg-terrakotta/10 transition-colors" />
+                <span className="text-[11px] text-anthrazit text-center leading-tight group-hover:text-terrakotta transition-colors font-cormorant">
+                  {cat.name}
+                </span>
               </Link>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Categories */}
-      <section className="max-w-6xl mx-auto px-4 py-12">
-        <div className="flex items-baseline justify-between mb-6">
-          <h2 className="section-title">Was sucht ihr?</h2>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {CATEGORIES.map(cat => (
-            <Link key={cat.slug} href={`/${cat.slug}`}
-              className="card p-4 text-center hover:border-brand-200 transition-colors group">
-              <div className="text-3xl mb-2">{cat.icon}</div>
-              <div className="text-sm font-medium text-gray-900 group-hover:text-brand-500 transition-colors">
-                {cat.name}
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
+        {/* Ausgewählte Dienstleister */}
+        <section>
+          <h2 className="section-title mb-7">Ausgewählte Dienstleister</h2>
 
-      {/* Featured vendors */}
-      <section className="max-w-6xl mx-auto px-4 pb-12">
-        <div className="flex items-baseline justify-between mb-6">
-          <h2 className="section-title">Empfohlene Anbieter</h2>
-          <Link href="/anbieter" className="text-sm text-brand-500 hover:text-brand-600">
-            Alle anzeigen →
-          </Link>
-        </div>
-        <Suspense fallback={
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="card h-64 animate-pulse bg-gray-50" />
-            ))}
-          </div>
-        }>
-          <FeaturedVendors />
-        </Suspense>
-      </section>
-
-      {/* Stats */}
-      <section className="bg-white border-y border-gray-100 py-10">
-        <div className="max-w-4xl mx-auto px-4 grid grid-cols-3 gap-8 text-center">
-          {[
-            { num: '1.200+', label: 'Dienstleister' },
-            { num: '0 €', label: 'Provision für Paare' },
-            { num: '24h', label: 'Ø Antwortzeit' },
-          ].map(stat => (
-            <div key={stat.label}>
-              <div className="font-serif text-3xl text-brand-500 mb-1">{stat.num}</div>
-              <div className="text-sm text-gray-500">{stat.label}</div>
+          {loadingVendors ? (
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
+              {[...Array(4)].map((_, i) => <VendorSkeleton key={i} />)}
             </div>
-          ))}
-        </div>
-      </section>
+          ) : vendors.length > 0 ? (
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
+              {vendors.map(v => <VendorCard key={v.id} v={v} />)}
+            </div>
+          ) : (
+            <div className="text-center py-16 bg-white rounded-2xl border border-gray-100">
+              <p className="text-gray-400 font-cormorant mb-4">Noch keine Dienstleister eingetragen.</p>
+              <Link href="/dienstleister/registrieren" className="btn-primary">
+                Als Erster eintragen
+              </Link>
+            </div>
+          )}
 
-      {/* Vendor CTA */}
-      <section className="max-w-6xl mx-auto px-4 py-12">
-        <div className="bg-brand-50 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>
-            <h2 className="font-serif text-2xl font-normal text-gray-900 mb-2">
-              Du bist Anbieter in der Hochzeitsbranche?
-            </h2>
-            <p className="text-gray-600 text-sm max-w-md">
-              Erstelle dein kostenloses Profil und erreiche tausende Paare in deiner Region – ohne Provision.
-            </p>
+          <div className="mt-10 text-center">
+            <Link href="/suche" className="btn-outline">
+              Weitere Dienstleister entdecken
+            </Link>
           </div>
-          <div className="flex gap-3 shrink-0">
-            <Link href="/anbieter-werden" className="btn-outline">Mehr erfahren</Link>
-            <Link href="/anbieter-werden" className="btn-primary">Kostenlos starten</Link>
-          </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
       <Footer />
     </>

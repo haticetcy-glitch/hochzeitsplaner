@@ -1,6 +1,59 @@
 {
-  "app": {},
-  "appUsingSizeAdjust": false,
+  "app": {
+    "[project]/src/app/[category]/[slug]/page": [
+      "static/media/2a65768255d6b625-s.p.14by5b4al-y~f.woff2",
+      "static/media/01e4147cff8141ee-s.p.10ked.7w885.g.woff2"
+    ],
+    "[project]/src/app/[category]/page": [
+      "static/media/2a65768255d6b625-s.p.14by5b4al-y~f.woff2",
+      "static/media/01e4147cff8141ee-s.p.10ked.7w885.g.woff2"
+    ],
+    "[project]/src/app/agb/page": [
+      "static/media/2a65768255d6b625-s.p.14by5b4al-y~f.woff2",
+      "static/media/01e4147cff8141ee-s.p.10ked.7w885.g.woff2"
+    ],
+    "[project]/src/app/anbieter-werden/page": [
+      "static/media/2a65768255d6b625-s.p.14by5b4al-y~f.woff2",
+      "static/media/01e4147cff8141ee-s.p.10ked.7w885.g.woff2"
+    ],
+    "[project]/src/app/anbieter/[id]/page": [
+      "static/media/2a65768255d6b625-s.p.14by5b4al-y~f.woff2",
+      "static/media/01e4147cff8141ee-s.p.10ked.7w885.g.woff2"
+    ],
+    "[project]/src/app/datenschutz/page": [
+      "static/media/2a65768255d6b625-s.p.14by5b4al-y~f.woff2",
+      "static/media/01e4147cff8141ee-s.p.10ked.7w885.g.woff2"
+    ],
+    "[project]/src/app/dienstleister/dashboard/page": [
+      "static/media/2a65768255d6b625-s.p.14by5b4al-y~f.woff2",
+      "static/media/01e4147cff8141ee-s.p.10ked.7w885.g.woff2"
+    ],
+    "[project]/src/app/dienstleister/login/page": [
+      "static/media/2a65768255d6b625-s.p.14by5b4al-y~f.woff2",
+      "static/media/01e4147cff8141ee-s.p.10ked.7w885.g.woff2"
+    ],
+    "[project]/src/app/dienstleister/profil-bearbeiten/page": [
+      "static/media/2a65768255d6b625-s.p.14by5b4al-y~f.woff2",
+      "static/media/01e4147cff8141ee-s.p.10ked.7w885.g.woff2"
+    ],
+    "[project]/src/app/dienstleister/registrieren/page": [
+      "static/media/2a65768255d6b625-s.p.14by5b4al-y~f.woff2",
+      "static/media/01e4147cff8141ee-s.p.10ked.7w885.g.woff2"
+    ],
+    "[project]/src/app/page": [
+      "static/media/2a65768255d6b625-s.p.14by5b4al-y~f.woff2",
+      "static/media/01e4147cff8141ee-s.p.10ked.7w885.g.woff2"
+    ],
+    "[project]/src/app/suche/page": [
+      "static/media/2a65768255d6b625-s.p.14by5b4al-y~f.woff2",
+      "static/media/01e4147cff8141ee-s.p.10ked.7w885.g.woff2"
+    ],
+    "[project]/src/app/ueber-uns/page": [
+      "static/media/2a65768255d6b625-s.p.14by5b4al-y~f.woff2",
+      "static/media/01e4147cff8141ee-s.p.10ked.7w885.g.woff2"
+    ]
+  },
+  "appUsingSizeAdjust": true,
   "pages": {},
   "pagesUsingSizeAdjust": false
 }

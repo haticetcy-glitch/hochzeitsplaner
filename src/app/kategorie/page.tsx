@@ -53,7 +53,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
             <span>/</span>
             <span className="text-gray-700">{cat.name}</span>
           </div>
-          <h1 className="font-serif text-3xl font-normal text-gray-900 mb-1">
+          <h1 className="font-serif text-3xl font-normal text-anthrazit mb-1">
             {cat.icon} {cat.name}
             {searchParams.stadt && ` in ${searchParams.stadt}`}
           </h1>

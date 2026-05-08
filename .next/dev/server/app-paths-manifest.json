@@ -1,4 +1,17 @@
 {
   "/[category]/[slug]/page": "app/[category]/[slug]/page.js",
-  "/api/inquiries/route": "app/api/inquiries/route.js"
+  "/[category]/page": "app/[category]/page.js",
+  "/agb/page": "app/agb/page.js",
+  "/anbieter-werden/page": "app/anbieter-werden/page.js",
+  "/anbieter/[id]/page": "app/anbieter/[id]/page.js",
+  "/api/inquiries/route": "app/api/inquiries/route.js",
+  "/auth/callback/route": "app/auth/callback/route.js",
+  "/datenschutz/page": "app/datenschutz/page.js",
+  "/dienstleister/dashboard/page": "app/dienstleister/dashboard/page.js",
+  "/dienstleister/login/page": "app/dienstleister/login/page.js",
+  "/dienstleister/profil-bearbeiten/page": "app/dienstleister/profil-bearbeiten/page.js",
+  "/dienstleister/registrieren/page": "app/dienstleister/registrieren/page.js",
+  "/page": "app/page.js",
+  "/suche/page": "app/suche/page.js",
+  "/ueber-uns/page": "app/ueber-uns/page.js"
 }

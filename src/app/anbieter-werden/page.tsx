@@ -54,9 +54,9 @@ export default function AnbieterWerdenPage() {
       {/* Hero */}
       <div className="bg-white border-b border-gray-100">
         <div className="max-w-3xl mx-auto px-4 py-14 text-center">
-          <h1 className="font-serif text-4xl font-normal text-gray-900 mb-3">
+          <h1 className="font-serif text-4xl font-normal text-anthrazit mb-3">
             Werde Teil von<br />
-            <em className="text-brand-500">Hochzeitsplaner.de</em>
+            <em className="text-terrakotta">Hochzeitsplaner.de</em>
           </h1>
           <p className="text-gray-500 max-w-xl mx-auto">
             Erreiche tausende Paare in deiner Region. Kostenlos starten, wachsen wenn du bereit bist.
@@ -71,23 +71,23 @@ export default function AnbieterWerdenPage() {
           {PLANS.map(plan => (
             <div key={plan.id} className={`rounded-2xl border p-6 ${
               plan.highlight
-                ? 'border-brand-500 border-2 relative'
+                ? 'border-terrakotta border-2 relative'
                 : 'border-gray-100 bg-white'
             }`}>
               {plan.highlight && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand-500 text-white text-xs px-3 py-1 rounded-full font-medium">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-terrakotta text-white text-xs px-3 py-1 rounded-full font-medium">
                   Beliebteste Wahl
                 </div>
               )}
               <div className="mb-4">
-                <div className="font-medium text-gray-900 mb-0.5">{plan.name}</div>
-                <div className="font-serif text-2xl text-gray-900">{plan.price}</div>
+                <div className="font-medium text-anthrazit mb-0.5">{plan.name}</div>
+                <div className="font-serif text-2xl text-anthrazit">{plan.price}</div>
                 <div className="text-xs text-gray-400">{plan.description}</div>
               </div>
               <ul className="space-y-2.5 mb-6">
                 {plan.features.map(f => (
                   <li key={f} className="flex items-center gap-2 text-sm text-gray-600">
-                    <CheckCircle size={14} className="text-brand-500 shrink-0" />
+                    <CheckCircle size={14} className="text-terrakotta shrink-0" />
                     {f}
                   </li>
                 ))}
@@ -96,7 +96,7 @@ export default function AnbieterWerdenPage() {
                 onClick={() => set('plan', plan.id)}
                 className={`w-full py-2.5 rounded-lg text-sm font-medium transition-colors ${
                   form.plan === plan.id
-                    ? 'bg-brand-500 text-white'
+                    ? 'bg-terrakotta text-white'
                     : plan.highlight
                     ? 'btn-primary'
                     : 'btn-outline'
@@ -151,7 +151,7 @@ export default function AnbieterWerdenPage() {
                     <button type="button" key={p.id} onClick={() => set('plan', p.id)}
                       className={`flex-1 py-2 rounded-lg text-xs font-medium border transition-colors ${
                         form.plan === p.id
-                          ? 'bg-brand-500 text-white border-brand-500'
+                          ? 'bg-terrakotta text-white border-terrakotta'
                           : 'border-gray-200 text-gray-600 hover:border-gray-300'
                       }`}>
                       {p.name}
