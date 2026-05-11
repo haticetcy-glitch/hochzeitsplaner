@@ -55,13 +55,13 @@ export default async function CategoryPage({ params, searchParams }: Props) {
             <span className="text-gray-700">{cat.name}</span>
           </div>
           <h1 className="font-serif text-3xl font-normal text-anthrazit mb-1">
-            {cat.icon} {cat.name}
+            {cat.name}
             {stadt && ` in ${stadt}`}
           </h1>
           <p className="text-gray-500 text-sm mb-6">
             {vendors.length > 0 ? `${vendors.length} Anbieter gefunden` : 'Alle Anbieter'}
           </p>
-          <SearchBar />
+          <SearchBar defaultCategory={category} />
         </div>
       </div>
       <div className="max-w-6xl mx-auto px-4 py-8">
@@ -71,7 +71,6 @@ export default async function CategoryPage({ params, searchParams }: Props) {
           </div>
         ) : (
           <div className="text-center py-20">
-            <div className="text-5xl mb-4">{cat.icon}</div>
             <h2 className="font-serif text-xl font-normal mb-2">
               Noch keine {cat.name} eingetragen
             </h2>

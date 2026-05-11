@@ -7,15 +7,6 @@ import Footer from '@/components/layout/Footer'
 import HeroSearchBar from '@/components/ui/HeroSearchBar'
 import { getBrowserClient } from '@/lib/supabase'
 
-const PAGE_CATEGORIES = [
-  { name: 'Locations',   slug: 'locations' },
-  { name: 'Fotografen',  slug: 'fotografen' },
-  { name: 'Videografen', slug: 'videografen' },
-  { name: 'Catering',    slug: 'catering' },
-  { name: 'Musik',       slug: 'musik' },
-  { name: 'Makeup',      slug: 'makeup' },
-  { name: 'Floristik',   slug: 'floristik' },
-]
 
 type VendorProfile = {
   id: string
@@ -144,18 +135,80 @@ export default function HomePage() {
         <section className="mb-14">
           <h2 className="section-title mb-7">Beliebte Kategorien</h2>
           <div className="flex gap-3">
-            {PAGE_CATEGORIES.map(cat => (
-              <Link
-                key={cat.slug}
-                href={`/${cat.slug}`}
-                className="flex-1 flex flex-col items-center gap-2.5 group"
-              >
-                <div className="category-icon-wrapper w-12 h-12 shrink-0 group-hover:bg-terrakotta/10 transition-colors" />
-                <span className="text-[11px] text-anthrazit text-center leading-tight group-hover:text-terrakotta transition-colors font-cormorant">
-                  {cat.name}
-                </span>
-              </Link>
-            ))}
+
+            <Link href="/locations" className="flex-1 flex flex-col items-center gap-2.5 group">
+              <div className="w-11 h-11 rounded-full bg-blush flex items-center justify-center group-hover:bg-terrakotta transition-colors duration-200">
+                <svg className="w-5 h-5 text-anthrazit group-hover:text-white transition-colors duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                  <circle cx="12" cy="9" r="2.5"/>
+                </svg>
+              </div>
+              <span className="text-sm text-anthrazit font-cormorant group-hover:text-terrakotta transition-colors">Locations</span>
+            </Link>
+
+            <Link href="/fotografen" className="flex-1 flex flex-col items-center gap-2.5 group">
+              <div className="w-11 h-11 rounded-full bg-blush flex items-center justify-center group-hover:bg-terrakotta transition-colors duration-200">
+                <svg className="w-5 h-5 text-anthrazit group-hover:text-white transition-colors duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+                  <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
+                  <circle cx="12" cy="13" r="4"/>
+                </svg>
+              </div>
+              <span className="text-sm text-anthrazit font-cormorant group-hover:text-terrakotta transition-colors">Fotografen</span>
+            </Link>
+
+            <Link href="/videografen" className="flex-1 flex flex-col items-center gap-2.5 group">
+              <div className="w-11 h-11 rounded-full bg-blush flex items-center justify-center group-hover:bg-terrakotta transition-colors duration-200">
+                <svg className="w-5 h-5 text-anthrazit group-hover:text-white transition-colors duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+                  <polygon points="23 7 16 12 23 17 23 7"/>
+                  <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                </svg>
+              </div>
+              <span className="text-sm text-anthrazit font-cormorant group-hover:text-terrakotta transition-colors">Videografen</span>
+            </Link>
+
+            <Link href="/catering" className="flex-1 flex flex-col items-center gap-2.5 group">
+              <div className="w-11 h-11 rounded-full bg-blush flex items-center justify-center group-hover:bg-terrakotta transition-colors duration-200">
+                <svg className="w-5 h-5 text-anthrazit group-hover:text-white transition-colors duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+                  <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/>
+                  <path d="M7 2v20"/>
+                  <path d="M21 15V2a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/>
+                </svg>
+              </div>
+              <span className="text-sm text-anthrazit font-cormorant group-hover:text-terrakotta transition-colors">Catering</span>
+            </Link>
+
+            <Link href="/musik" className="flex-1 flex flex-col items-center gap-2.5 group">
+              <div className="w-11 h-11 rounded-full bg-blush flex items-center justify-center group-hover:bg-terrakotta transition-colors duration-200">
+                <svg className="w-5 h-5 text-anthrazit group-hover:text-white transition-colors duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+                  <path d="M9 18V5l12-2v13"/>
+                  <circle cx="6" cy="18" r="3"/>
+                  <circle cx="18" cy="16" r="3"/>
+                </svg>
+              </div>
+              <span className="text-sm text-anthrazit font-cormorant group-hover:text-terrakotta transition-colors">Musik</span>
+            </Link>
+
+            <Link href="/makeup" className="flex-1 flex flex-col items-center gap-2.5 group">
+              <div className="w-11 h-11 rounded-full bg-blush flex items-center justify-center group-hover:bg-terrakotta transition-colors duration-200">
+                <svg className="w-5 h-5 text-anthrazit group-hover:text-white transition-colors duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+                  <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/>
+                </svg>
+              </div>
+              <span className="text-sm text-anthrazit font-cormorant group-hover:text-terrakotta transition-colors">Makeup</span>
+            </Link>
+
+            <Link href="/floristik" className="flex-1 flex flex-col items-center gap-2.5 group">
+              <div className="w-11 h-11 rounded-full bg-blush flex items-center justify-center group-hover:bg-terrakotta transition-colors duration-200">
+                <svg className="w-5 h-5 text-anthrazit group-hover:text-white transition-colors duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+                  <path d="M12 22V12"/>
+                  <path d="M12 12C12 12 7 10 7 5a5 5 0 0110 0c0 5-5 7-5 7z"/>
+                  <path d="M12 12C12 12 17 10 17 5"/>
+                  <path d="M5 17c0-2.8 3.1-5 7-5s7 2.2 7 5"/>
+                </svg>
+              </div>
+              <span className="text-sm text-anthrazit font-cormorant group-hover:text-terrakotta transition-colors">Floristik</span>
+            </Link>
+
           </div>
         </section>
 

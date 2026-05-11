@@ -207,24 +207,3 @@ select
   ARRAY['Editorial', 'Film-Look', 'Reportage', 'On-Location'],
   id from categories where slug = 'fotografen';
 
-insert into vendors (slug, name, tagline, description, city, state, price_from, price_to, price_unit, is_featured, plan, tags, category_id)
-select
-  'schloss-heidelberg-terrasse',
-  'Schloss Heidelberg Terrasse',
-  'Heiraten mit Blick über die Altstadt',
-  'Die romantischste Kulisse Deutschlands für eure Traumhochzeit. Mit Blick über die Heidelberger Altstadt und den Neckar bieten wir unvergessliche Momente für bis zu 200 Gäste.',
-  'Heidelberg', 'Baden-Württemberg', 2500, 8000, 'pauschal',
-  true, 'premium',
-  ARRAY['Outdoor', 'Historisch', 'Panorama', 'Sommer'],
-  id from categories where slug = 'locations';
-
-insert into vendors (slug, name, tagline, description, city, state, price_from, price_to, price_unit, plan, tags, category_id)
-select
-  'gut-erlenbach',
-  'Gut Erlenbach',
-  'Natürliche Scheunen-Hochzeiten in der Natur',
-  'Euer Ja-Wort inmitten von Weinbergen und Streuobstwiesen. Authentisch, nachhaltig, unvergesslich.',
-  'Weinheim', 'Baden-Württemberg', 1800, 5500, 'pauschal',
-  'premium',
-  ARRAY['Scheune', 'Natur', 'Boho', 'Nachhaltig'],
-  id from categories where slug = 'locations';

@@ -136,7 +136,7 @@ export default function AnbieterWerdenPage() {
                 <select className="input" required value={form.category} onChange={e => set('category', e.target.value)}>
                   <option value="">Bitte wählen</option>
                   {CATEGORIES.map(c => (
-                    <option key={c.slug} value={c.slug}>{c.icon} {c.name}</option>
+                    <option key={c.slug} value={c.slug}>{c.name}</option>
                   ))}
                 </select>
               </div>

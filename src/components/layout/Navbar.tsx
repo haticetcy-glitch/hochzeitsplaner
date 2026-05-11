@@ -1,7 +1,8 @@
 'use client'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Heart, Menu, X } from 'lucide-react'
+import { getBrowserClient } from '@/lib/supabase'
 
 const NAV_CATEGORIES = [
   { href: '/locations', label: 'Locations' },
@@ -15,6 +16,16 @@ const NAV_CATEGORIES = [
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(false)
+
+  useEffect(() => {
+    const supabase = getBrowserClient()
+    supabase.auth.getUser().then(({ data }) => setLoggedIn(!!data.user))
+    const { data: listener } = supabase.auth.onAuthStateChange((_e, session) => {
+      setLoggedIn(!!session?.user)
+    })
+    return () => listener.subscription.unsubscribe()
+  }, [])
 
   return (
     <nav className="bg-white border-b border-gray-100 sticky top-0 z-50">
@@ -60,18 +71,26 @@ export default function Navbar() {
 
         {/* Desktop right actions */}
         <div className="hidden md:flex items-center gap-5">
-          <Link
-            href="/dienstleister/registrieren"
-            className="text-sm text-anthrazit hover:text-terrakotta transition-colors font-cormorant text-[15px]"
-          >
-            Für Dienstleister
-          </Link>
+          {!loggedIn && (
+            <Link
+              href="/dienstleister/registrieren"
+              className="text-sm text-anthrazit hover:text-terrakotta transition-colors font-cormorant text-[15px]"
+            >
+              Für Dienstleister
+            </Link>
+          )}
           <button className="text-gray-400 hover:text-terrakotta transition-colors">
             <Heart size={18} />
           </button>
-          <Link href="/dienstleister/login" className="btn-outline">
-            Anmelden
-          </Link>
+          {loggedIn ? (
+            <Link href="/dienstleister/dashboard" className="btn-primary">
+              Dashboard
+            </Link>
+          ) : (
+            <Link href="/dienstleister/login" className="btn-outline">
+              Anmelden
+            </Link>
+          )}
         </div>
 
         {/* Mobile toggle */}
@@ -92,15 +111,27 @@ export default function Navbar() {
             </Link>
           ))}
           <Link href="/suche" onClick={() => setMenuOpen(false)} className="text-terrakotta font-medium">Entdecken</Link>
-          <Link href="/dienstleister/registrieren" onClick={() => setMenuOpen(false)}>Für Dienstleister</Link>
+          {!loggedIn && (
+            <Link href="/dienstleister/registrieren" onClick={() => setMenuOpen(false)}>Für Dienstleister</Link>
+          )}
           <div className="flex gap-3 pt-1">
-            <Link
-              href="/dienstleister/login"
-              className="btn-outline flex-1 text-center"
-              onClick={() => setMenuOpen(false)}
-            >
-              Anmelden
-            </Link>
+            {loggedIn ? (
+              <Link
+                href="/dienstleister/dashboard"
+                className="btn-primary flex-1 text-center"
+                onClick={() => setMenuOpen(false)}
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <Link
+                href="/dienstleister/login"
+                className="btn-outline flex-1 text-center"
+                onClick={() => setMenuOpen(false)}
+              >
+                Anmelden
+              </Link>
+            )}
           </div>
         </div>
       )}

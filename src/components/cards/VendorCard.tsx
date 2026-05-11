@@ -38,8 +38,8 @@ export default function VendorCard({ vendor }: { vendor: Vendor }) {
             className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-4xl">
-            {vendor.category?.icon || '💍'}
+          <div className="w-full h-full flex items-center justify-center">
+            <span className="text-5xl opacity-10">✦</span>
           </div>
         )}
         {vendor.is_featured && (

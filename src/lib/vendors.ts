@@ -88,12 +88,11 @@ export const GERMAN_CITIES = [
 ]
 
 export const CATEGORIES = [
-  { slug: 'locations',   name: 'Locations',      icon: '📍' },
-  { slug: 'fotografen',  name: 'Fotografen',     icon: '📷' },
-  { slug: 'floristik',   name: 'Floristik',      icon: '🌸' },
-  { slug: 'catering',    name: 'Catering',       icon: '🍽️' },
-  { slug: 'musik',       name: 'DJ & Musik',     icon: '🎵' },
-  { slug: 'hair-makeup', name: 'Hair & Make-up', icon: '💄' },
-  { slug: 'dekoration',  name: 'Dekoration',     icon: '✨' },
-  { slug: 'torte',       name: 'Hochzeitstorte', icon: '🎂' },
+  { slug: 'locations',   name: 'Locations' },
+  { slug: 'fotografen',  name: 'Fotografen' },
+  { slug: 'videografen', name: 'Videografen' },
+  { slug: 'catering',    name: 'Catering' },
+  { slug: 'musik',       name: 'Musik' },
+  { slug: 'makeup',      name: 'Makeup' },
+  { slug: 'floristik',   name: 'Floristik' },
 ]

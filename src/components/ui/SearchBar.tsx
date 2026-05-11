@@ -4,9 +4,9 @@ import { useRouter } from 'next/navigation'
 import { Search, MapPin } from 'lucide-react'
 import { CATEGORIES, GERMAN_CITIES } from '@/lib/vendors'
 
-export default function SearchBar({ className = '' }: { className?: string }) {
+export default function SearchBar({ className = '', defaultCategory = '' }: { className?: string; defaultCategory?: string }) {
   const router = useRouter()
-  const [category, setCategory] = useState('')
+  const [category, setCategory] = useState(defaultCategory)
   const [city, setCity] = useState('')
 
   function handleSearch(e: React.FormEvent) {
@@ -28,7 +28,7 @@ export default function SearchBar({ className = '' }: { className?: string }) {
         >
           <option value="">Alle Kategorien</option>
           {CATEGORIES.map(c => (
-            <option key={c.slug} value={c.slug}>{c.icon} {c.name}</option>
+            <option key={c.slug} value={c.slug}>{c.name}</option>
           ))}
         </select>
       </div>

@@ -91,8 +91,8 @@ export default function DashboardPage() {
               className="flex items-center gap-1.5 text-sm text-anthrazit hover:text-terrakotta transition-colors px-3 py-1.5 rounded-lg hover:bg-sand font-cormorant">
               <Pencil size={14} /> Profil bearbeiten
             </Link>
-            {profile?.business_name && (
-              <Link href={`/anbieter/${profile.business_name.toLowerCase().replace(/\s+/g, '-')}`}
+            {user && (
+              <Link href={`/anbieter/${user.id}`}
                 className="flex items-center gap-1.5 text-sm text-anthrazit hover:text-terrakotta transition-colors px-3 py-1.5 rounded-lg hover:bg-sand font-cormorant">
                 <ExternalLink size={14} /> Profil ansehen
               </Link>
