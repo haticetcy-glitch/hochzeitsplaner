@@ -21,6 +21,7 @@ type VendorProfile = {
   phone: string
   email: string
   website: string
+  price_from: number | null
 }
 
 const EVENT_TYPES = ['Hochzeit', 'Geburtstag', 'Firmenevent', 'Jubiläum', 'Sonstiges']
@@ -193,6 +194,11 @@ export default function VendorDetailPage() {
                     <span className="flex items-center gap-1 text-sm text-gray-500 font-cormorant">
                       <MapPin size={13} className="text-terrakotta" />
                       {vendor.city}
+                    </span>
+                  )}
+                  {vendor.price_from && (
+                    <span className="text-sm text-gray-500 font-cormorant">
+                      ab {vendor.price_from.toLocaleString('de-DE')} €
                     </span>
                   )}
                   <span className="flex items-center gap-0.5">
